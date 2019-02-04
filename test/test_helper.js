@@ -8,7 +8,7 @@ const clearDB = done => {
   });
 };
 
-before(done => {
+suiteSetup(done => {
   mongoose.connect(
     'mongodb://localhost/users_test',
     { useNewUrlParser: true }
@@ -22,6 +22,6 @@ before(done => {
     });
 });
 
-beforeEach(clearDB);
+setup(clearDB);
 
 // after(clearDB);
