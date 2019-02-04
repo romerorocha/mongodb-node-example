@@ -2,8 +2,17 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
+const clearDB = done => {
+  mongoose.connection.collections.users.drop(() => {
+    done();
+  });
+};
+
 before(done => {
-  mongoose.connect('mongodb://localhost/users_test', { useNewUrlParser: true });
+  mongoose.connect(
+    'mongodb://localhost/users_test',
+    { useNewUrlParser: true }
+  );
   mongoose.connection
     .once('open', () => {
       done();
@@ -13,6 +22,6 @@ before(done => {
     });
 });
 
-beforeEach(async () => {
-  await mongoose.connection.collections.users.drop();
-});
+beforeEach(clearDB);
+
+// after(clearDB);
