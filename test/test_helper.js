@@ -3,13 +3,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.set('useFindAndModify', false);
 
-const clearDB = done => {
-  mongoose.connection.collections.users.drop(() => {
-    done();
-  });
-};
-
-suiteSetup(done => {
+before(done => {
   mongoose.connect('mongodb://localhost/users_test', { useNewUrlParser: true });
   mongoose.connection
     .once('open', () => {
@@ -20,6 +14,12 @@ suiteSetup(done => {
     });
 });
 
-setup(clearDB);
+const clearDB = done => {
+  mongoose.connection.collections.users.drop(() => {
+    done();
+  });
+};
+
+beforeEach(clearDB);
 
 // after(clearDB);
