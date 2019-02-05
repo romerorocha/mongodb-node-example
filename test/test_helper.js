@@ -3,19 +3,19 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.set('useFindAndModify', false);
 
-before(done => {
+before(function(done) {
   mongoose.connect('mongodb://localhost/users_test', { useNewUrlParser: true });
   mongoose.connection
-    .once('open', () => {
+    .once('open', function() {
       done();
     })
-    .on('error', error => {
+    .on('error', function(error) {
       console.warn('Warning', error);
     });
 });
 
-beforeEach(done => {
-  mongoose.connection.collections.users.drop(() => {
+beforeEach(function(done) {
+  mongoose.connection.collections.users.drop(function() {
     done();
   });
 });
