@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --exec 'mocha --ui tdd --exit'"
+    "test": "mocha --exit"
   },
   "license": "MIT",
   "dependencies": {
