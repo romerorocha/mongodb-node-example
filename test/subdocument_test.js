@@ -3,18 +3,17 @@ const User = require('../src/user');
 
 describe('Subdocuments', function() {
   it('can create a subdocument', async function() {
-    const [title, author, body] = ['My Post', 'Me', 'Content'];
+    const [title, body] = ['My Post', 'Content'];
 
     const joe = new User({
       name: 'Joe',
-      posts: [{ title, author, body }],
+      posts: [{ title, body }],
     });
 
     await joe.save();
 
     const user = await User.findOne({ name: 'Joe' });
     assert.equal(user.posts[0].title, title);
-    assert.equal(user.posts[0].author, author);
     assert.equal(user.posts[0].body, body);
   });
 

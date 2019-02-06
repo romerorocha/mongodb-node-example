@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Subdocument use case - Post
 const PostSchema = new Schema({
   title: String,
   body: String,
-  author: String,
 });
 
 module.exports = PostSchema;

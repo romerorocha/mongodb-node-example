@@ -11,7 +11,8 @@ const UserSchema = new Schema({
     },
     required: [true, 'Name is required.'],
   },
-  posts: [PostSchema],
+  posts: [PostSchema], // Subdocument use case
+  blogPosts: [{ type: Schema.Types.ObjectId, ref: 'blogPost' }],
   likes: Number,
 });
 
