@@ -33,4 +33,23 @@ describe('Associations', function() {
     assert.equal(user.name, 'Joe');
     assert.equal(user.blogPosts[0].title, 'My Post');
   });
+
+  it('saves a full relation graph', async function() {
+    const user = await User.findOne({ name: 'Joe' }).populate({
+      path: 'blogPosts',
+      populate: {
+        path: 'comments',
+        model: 'comment',
+        populate: {
+          path: 'user',
+          model: 'user',
+        },
+      },
+    });
+
+    assert.equal(user.name, 'Joe');
+    assert.equal(user.blogPosts[0].title, 'My Post');
+    assert.equal(user.blogPosts[0].comments[0].content, 'My comment!');
+    assert.equal(user.blogPosts[0].comments[0].user.name, 'Joe');
+  });
 });
