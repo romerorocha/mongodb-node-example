@@ -5,7 +5,7 @@ describe('Updating records', function() {
   let joe;
 
   beforeEach(async function() {
-    joe = new User({ name: 'Joe', postCount: 1 });
+    joe = new User({ name: 'Joe', likes: 1 });
     await joe.save();
   });
 
@@ -42,8 +42,8 @@ describe('Updating records', function() {
   });
 
   it('a user can have postCount incremented by 1', async function() {
-    await User.updateMany({ name: 'Joe' }, { $inc: { postCount: 2 } });
+    await User.updateMany({ name: 'Joe' }, { $inc: { likes: 2 } });
     const user = await User.findOne({ name: 'Joe' });
-    assert.equal(user.postCount, 3);
+    assert.equal(user.likes, 3);
   });
 });
