@@ -37,4 +37,19 @@ describe('Subdocuments', function() {
     const updatedUser = await User.findOne({ name: 'Joe' });
     assert.equal(updatedUser.posts[0].title, 'New Post');
   });
+
+  it('can remove an existing subdocument', async function() {
+    // Create user
+    const joe = new User({ name: 'Joe', posts: [{ title: 'New Title' }] });
+    await joe.save();
+
+    // Remove post
+    const user = await User.findOne({ name: 'Joe' });
+    user.posts[0].remove();
+    await user.save();
+
+    // Validation
+    const updatedUser = await User.findOne({ name: 'Joe' });
+    assert.equal(updatedUser.posts.length, 0);
+  });
 });
