@@ -9,9 +9,7 @@ describe('Reading users out of the database', function() {
       name: 'Joe',
     });
 
-    joe.save().then(() => {
-      done();
-    });
+    joe.save().then(() => done());
   });
 
   it('finds all users with a name of joe', function(done) {

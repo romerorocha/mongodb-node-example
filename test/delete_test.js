@@ -6,10 +6,7 @@ describe('Deleting a user', function() {
 
   beforeEach(function(done) {
     joe = new User({ name: 'Joe' });
-
-    joe.save().then(() => {
-      done();
-    });
+    joe.save().then(() => done());
   });
 
   it('model instance remove', function(done) {

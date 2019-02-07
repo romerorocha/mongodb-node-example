@@ -6,7 +6,7 @@ const Comment = require('../src/comment');
 describe('Associations', function() {
   let joe, blogPost, comment;
 
-  beforeEach(async function() {
+  beforeEach(function(done) {
     joe = new User({
       name: 'Joe',
     });
@@ -24,7 +24,9 @@ describe('Associations', function() {
     blogPost.comments.push(comment);
     comment.user = joe;
 
-    await Promise.all([joe.save(), blogPost.save(), comment.save()]);
+    Promise.all([joe.save(), blogPost.save(), comment.save()]).then(() =>
+      done(),
+    );
   });
 
   it('saves a relation between a user and a blogpost', async function() {
@@ -48,10 +50,13 @@ describe('Associations', function() {
         },
       })
       .then(user => {
+        const { title, comments } = user.blogPosts[0];
+
         assert.equal(user.name, 'Joe');
-        assert.equal(user.blogPosts[0].title, 'My Post');
-        assert.equal(user.blogPosts[0].comments[0].content, 'My comment!');
-        assert.equal(user.blogPosts[0].comments[0].user.name, 'Joe');
+        assert.equal(title, 'My Post');
+        assert.equal(comments[0].content, 'My comment!');
+        assert.equal(comments[0].user.name, 'Joe');
+
         done();
       });
   });
