@@ -9,7 +9,7 @@ describe('Validating records', function() {
     assert.equal(result.errors.name.message, message);
   }
 
-  it('requires a user name', async function() {
+  it('requires a user name', function() {
     user = new User({ name: undefined });
     assertValidation('Name is required.');
   });
@@ -19,13 +19,12 @@ describe('Validating records', function() {
     assertValidation('Name must be longer than 2 characters.');
   });
 
-  it('disallows invalid records from being saved', async function() {
-    try {
-      const user = new User({ name: 'Al' });
-      await user.save();
-    } catch (validationResult) {
+  it('disallows invalid records from being saved', function(done) {
+    const user = new User({ name: 'Al' });
+    user.save().catch(validationResult => {
       const { message } = validationResult.errors.name;
       assert.equal(message, 'Name must be longer than 2 characters.');
-    }
+      done();
+    });
   });
 });

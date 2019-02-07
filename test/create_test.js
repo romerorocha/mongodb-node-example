@@ -2,10 +2,11 @@ const assert = require('assert');
 const User = require('../src/user');
 
 describe('Creating records', function() {
-  it('saves a user', async function() {
+  it('saves a user', function(done) {
     const joe = new User({ name: 'Joe' });
-    await joe.save();
-
-    assert.ok(!joe.isNew);
+    joe.save().then(() => {
+      assert.ok(!joe.isNew);
+      done();
+    });
   });
 });

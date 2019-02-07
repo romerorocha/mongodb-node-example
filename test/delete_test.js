@@ -4,35 +4,52 @@ const User = require('../src/user');
 describe('Deleting a user', function() {
   let joe;
 
-  beforeEach(async function() {
+  beforeEach(function(done) {
     joe = new User({ name: 'Joe' });
 
-    await joe.save();
+    joe.save().then(() => {
+      done();
+    });
   });
 
-  it('model instance remove', async function() {
-    await joe.remove();
-    const user = await User.findOne({ name: joe.name });
-    assert.equal(user, null);
+  it('model instance remove', function(done) {
+    joe
+      .remove()
+      .then(() => {
+        return User.findOne({ name: joe.name });
+      })
+      .then(user => {
+        assert.equal(user, null);
+        done();
+      });
   });
 
-  it('class method deleteMany', async function() {
+  it('class method deleteMany', function(done) {
     const name = 'Joe';
-    await User.deleteMany({ name });
-    const user = await User.findOne({ name });
-    assert.equal(user, null);
+    User.deleteMany({ name })
+      .then(() => User.findOne({ name }))
+      .then(user => {
+        assert.equal(user, null);
+        done();
+      });
   });
 
-  it('class method findOneAndDelete', async function() {
+  it('class method findOneAndDelete', function(done) {
     const name = 'Joe';
-    await User.findOneAndDelete({ name });
-    const user = await User.findOne({ name });
-    assert.equal(user, null);
+    User.findOneAndDelete({ name }).then(() => {
+      User.findOne({ name }).then(user => {
+        assert.equal(user, null);
+        done();
+      });
+    });
   });
 
-  it('class method findByIdAndDelete', async function() {
-    await User.findByIdAndDelete(joe._id);
-    const user = await User.findById(joe._id);
-    assert.equal(user, null);
+  it('class method findByIdAndDelete', function(done) {
+    User.findByIdAndDelete(joe._id).then(() => {
+      User.findById(joe._id).then(user => {
+        assert.equal(user, null);
+        done();
+      });
+    });
   });
 });
